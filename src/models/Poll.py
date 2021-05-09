@@ -24,5 +24,13 @@ class Poll:
         # seznam hlasujicich stran
         self.parties = parties
 
-    def to_json(self):
-        return "TODO"
+    def to_dict(self):
+        return {
+            "code": self.code,
+            "number": self.number,
+            "datetime": self.datetime,
+            "subject": self.subject,
+            "result": self.result.name,
+            "details": self.details.to_dict(),
+            "parties": list(map((lambda party: party.to_dict()), self.parties))
+        }

@@ -14,5 +14,9 @@ class Vote:
         # zvolena moznost
         self.option = option
 
-    def to_json(self):
-        return "TODO"
+    def to_dict(self):
+        return {
+            "voter": self.voter,
+            "text": self.text,
+            "option": self.option.name if self.option else None
+        }

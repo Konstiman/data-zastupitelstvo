@@ -15,5 +15,9 @@ class PollParty:
         # seznam hlasu
         self.votes = votes
 
-    def to_json(self):
-        return "TODO"
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "details": self.details.to_dict(),
+            "votes": list(map((lambda vote: vote.to_dict()), self.votes))
+        }

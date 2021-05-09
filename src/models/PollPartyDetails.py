@@ -10,5 +10,9 @@ class PollPartyDetails:
         # pocet zdrzivsich se hlasovani
         self.abstained = abstained
 
-    def to_json(self):
-        return "TODO"
+    def to_dict(self):
+        return {
+            "yes": self.yes,
+            "no": self.no,
+            "abstained": self.abstained
+        }

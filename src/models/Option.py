@@ -10,5 +10,8 @@ class Option:
         # textova reprezentace volby
         self.name = name
 
-    def to_json(self):
-        return "TODO"
+    def to_dict(self):
+        return {
+            "sysid": self.sysid,
+            "name": self.name
+        }

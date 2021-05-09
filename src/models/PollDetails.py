@@ -14,5 +14,11 @@ class PollDetails:
         # pocet nepritomnych
         self.did_not_vote = did_not_vote
 
-    def to_json(self):
-        return "TODO"
+    def to_dict(self):
+        return {
+            "present": self.present,
+            "yes": self.yes,
+            "no": self.no,
+            "abstained": self.abstained,
+            "did_not_vote": self.did_not_vote
+        }
