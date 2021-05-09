@@ -14,13 +14,14 @@ from src.models.Vote import Vote
 
 
 # TODO add types
+# TODO remove camelCase
 
 
 class ProtocolParser:
     def __init__(self):
         self.__parser = AdvancedHTMLParser.AdvancedHTMLParser()
 
-    def parseFile(self, filename):
+    def parse_file(self, filename):
         html = self.__loadFile(filename)
         self.__parser.parseStr(html)
 

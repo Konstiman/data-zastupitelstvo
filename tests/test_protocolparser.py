@@ -22,7 +22,7 @@ class ParsingProtocolsTest(unittest.TestCase):
     def test_protocol_z8_18_1(self):
         parser = ProtocolParser()
 
-        parsed_poll = parser.parseFile('tests/protocols/20200616-1-29874.html')
+        parsed_poll = parser.parse_file('tests/protocols/20200616-1-29874.html')
 
         expected_poll = self.get_poll_z8_18_1()
 
@@ -31,7 +31,7 @@ class ParsingProtocolsTest(unittest.TestCase):
     def test_protocol_z8_25_24(self):
         parser = ProtocolParser()
 
-        parsed_poll = parser.parseFile(
+        parsed_poll = parser.parse_file(
             'tests/protocols/20210323-24-32825.html')
 
         expected_poll = self.get_poll_z8_25_24()
