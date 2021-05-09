@@ -6,13 +6,15 @@ import unittest
 import typing
 
 from src.models.Option import Option
-from src.ProtocolParser import ProtocolParser
 from src.models.Poll import Poll
 from src.models.PollDetails import PollDetails
 from src.models.PollParty import PollParty
 from src.models.PollPartyDetails import PollPartyDetails
 from src.models.Result import Result
 from src.models.Vote import Vote
+from src.ProtocolParser import ProtocolParser
+
+from utils import compare_polls
 
 
 class ParsingProtocolsTest(unittest.TestCase):
@@ -26,7 +28,7 @@ class ParsingProtocolsTest(unittest.TestCase):
 
         expected_poll = self.get_poll_z8_18_1()
 
-        self.compare_polls(parsed_poll, expected_poll)
+        compare_polls(self, parsed_poll, expected_poll)
 
     def test_protocol_z8_25_24(self):
         parser = ProtocolParser()
@@ -36,61 +38,7 @@ class ParsingProtocolsTest(unittest.TestCase):
 
         expected_poll = self.get_poll_z8_25_24()
 
-        self.compare_polls(parsed_poll, expected_poll)
-
-    # helper functions section
-
-    def compare_polls(self, actual: Poll, expected: Poll):
-        print("testing poll " + expected.code + "-" + str(expected.number))
-        self.assertEqual(actual.id, expected.id)
-        self.assertEqual(actual.code, expected.code)
-        self.assertEqual(actual.number, expected.number)
-        self.assertEqual(actual.datetime,  expected.datetime)
-        self.assertEqual(actual.subject, expected.subject)
-        self.compare_parties(actual.parties, expected.parties)
-        self.compare_poll_details(actual.details, expected.details)
-        self.assertEqual(actual.result.name, expected.result.name)
-
-    def compare_poll_details(self, actual: PollDetails, expected: PollDetails):
-        self.assertEqual(actual.present, expected.present)
-        self.assertEqual(actual.yes, expected.yes)
-        self.assertEqual(actual.no, expected.no)
-        self.assertEqual(actual.abstained, expected.abstained)
-        self.assertEqual(actual.did_not_vote, expected.did_not_vote)
-
-    def compare_parties(self, actual: [PollParty], expected: [PollParty]):
-        self.assertEqual(len(actual), len(expected))
-
-        for i in range(len(actual)):
-            print("  testing party '" + expected[i].name + "'")
-            self.assertEqual(actual[i].id, expected[i].id)
-            self.assertEqual(actual[i].name, expected[i].name)
-            self.compare_votes(actual[i].votes, expected[i].votes)
-            self.compare_parties_details(
-                actual[i].details, expected[i].details)
-
-    def compare_parties_details(self, actual: PollPartyDetails, expected: PollPartyDetails):
-        self.assertEqual(actual.yes, expected.yes)
-        self.assertEqual(actual.no, expected.no)
-        self.assertEqual(actual.abstained, expected.abstained)
-
-    def compare_votes(self, actual: [Vote], expected: [Vote]):
-        self.assertEqual(len(actual), len(expected))
-
-        for i in range(len(actual)):
-            self.assertEqual(actual[i].id, expected[i].id)
-            self.assertEqual(actual[i].voter, expected[i].voter)
-            self.assertEqual(actual[i].text, expected[i].text)
-            self.assertEqual(actual[i].text, expected[i].text)
-            self.compare_options(actual[i].option, expected[i].option)
-
-    def compare_options(self, actual: Option, expected: Option):
-        if (actual == None or expected == None):
-            self.assertEqual(actual, expected)
-        else:
-            self.assertEqual(actual.id, expected.id)
-            self.assertEqual(actual.sysid, expected.sysid)
-            self.assertEqual(actual.name, expected.name)
+        compare_polls(self, parsed_poll, expected_poll)
 
     # sample data section
 
