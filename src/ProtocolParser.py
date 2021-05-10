@@ -33,7 +33,7 @@ class ProtocolParser:
             r'\s+', ' ', self.__getValueByClassName(tables[0], 'subject'))
 
         # TODO choose one from db
-        result = Result(None, None, tables[1].textContent.strip())
+        result = self.__getPollResult(tables[1].textContent.strip())
 
         code = self.__parseCode(title)
         number = self.__parseNumber(subtitle)
@@ -65,6 +65,7 @@ class ProtocolParser:
 
     def __parseDatetime(self, title):
         p = re.compile(r'^\s*Zastupitelstvo města Brna č\. [^\s]+\s+(.*?)\s*$')
+        # TODO parse to ISO 8601
         return self.__parseValue(p, title)
 
     def __parseNumber(self, subtitle):
@@ -146,14 +147,24 @@ class ProtocolParser:
 
         return votes
 
+    def __getPollResult(self, text):
+        # TODO use regex
+        # TODO load options from db
+        if ("Přijato" in text):
+            return Result(1, "accepted", "Přijato")
+        if ("Zamítnuto" in text):
+            return Result(2, "declined", "Zamítnuto")
+
+        return None
+
     def __getVoteOption(self, text):
         # TODO use regex
         # TODO load options from db
         if ("Ano" in text):
-            return Option(None, "yes", "Ano")
+            return Option(1, "yes", "Ano")
         if ("Ne" in text and not "Nepř" in text and not "Nehlasoval" in text):
-            return Option(None, "no", "Ne")
+            return Option(2, "no", "Ne")
         if ("Zdržel se" in text):
-            return Option(None, "abstained", "Zdržel se")
+            return Option(3, "abstained", "Zdržel se")
 
         return None

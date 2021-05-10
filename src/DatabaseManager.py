@@ -25,6 +25,9 @@ class DatabaseManager(object):
     def __exit__(self, type, value, traceback):
         self.connection.close()
 
+    def close(self):
+        self.connection.close()
+
     def get_polls(self, parameters: str) -> [Poll]:
         # TODO params
         poll_query = "SELECT * FROM polls"
@@ -74,6 +77,38 @@ class DatabaseManager(object):
 
         for party in poll.parties:
             self.__save_poll_party(poll.id, party)
+
+    def get_processed_filenames(self) -> [str]:
+        query = "SELECT name FROM processed_files"
+
+        cur = self.connection.cursor()
+        cur.execute(query)
+
+        files = cur.fetchall()
+        output = []
+        for file in files:
+            output.append(file["name"])
+
+        return output
+
+    def save_processed_file(self, name, datetime):
+        sql = 'INSERT INTO "processed_files" ("name", "datetime") VALUES (?,?);'
+
+        cur = self.connection.cursor()
+        cur.execute(sql, (name, datetime))
+        self.connection.commit()
+
+    def get_last_update(self) -> str:
+        query = "SELECT MAX(datetime) AS datetime FROM processed_files"
+
+        cur = self.connection.cursor()
+        cur.execute(query)
+
+        entry = cur.fetchone()
+        if entry:
+            return entry["datetime"]
+
+        return ""
 
     def __save_poll_party(self, poll_id: int, party: PollParty):
         sql = 'INSERT INTO "poll_parties" ("poll", "name", "yes", "no", "abstained") VALUES (?,?,?,?,?);'
