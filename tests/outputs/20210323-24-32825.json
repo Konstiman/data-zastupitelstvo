@@ -1,0 +1,126 @@
+{
+  "last_update": "2021-05-10 13:47:00",
+  "data": [
+    {
+      "code": "Z8/25",
+      "number": 24,
+      "datetime": "23.03.2021 - 9:07:05",
+      "subject": "21. Návrh na poskytnutí individuální investiční dotace Moravskému zemskému muzeu na realizaci projektu „Mendelova stezka Brnem“ – návrh rozpočtového opatření",
+      "result": "Přijato",
+      "details": {
+        "present": 41,
+        "yes": 39,
+        "no": 1,
+        "abstained": 1,
+        "did_not_vote": null
+      },
+      "parties": [
+        {
+          "name": "Nezávislí pro Brno",
+          "details": { "yes": 3, "no": 0, "abstained": 0 },
+          "votes": [
+            { "voter": "David Aleš", "text": "Ano", "option": "Ano" },
+            { "voter": "Pavel Dvořák", "text": "nepřít.", "option": null },
+            { "voter": "Jiří Faltýnek", "text": "nepřít.", "option": null },
+            { "voter": "Šárka Korkešová", "text": "Ano", "option": "Ano" },
+            {
+              "voter": "Iva Kremitovská",
+              "text": "nepřít. (VK)",
+              "option": null
+            },
+            { "voter": "Lucie Pokorná", "text": "Ano", "option": "Ano" }
+          ]
+        },
+        {
+          "name": "ČSSD",
+          "details": { "yes": 4, "no": 0, "abstained": 0 },
+          "votes": [
+            { "voter": "Jiří Ides", "text": "nepřít.", "option": null },
+            { "voter": "Jiří Oliva", "text": "Ano", "option": "Ano" },
+            { "voter": "Jiří Novotný", "text": "Ano", "option": "Ano" },
+            { "voter": "Pavel Sázavský", "text": "Ano", "option": "Ano" },
+            { "voter": "Marek Viskot", "text": "Ano", "option": "Ano" }
+          ]
+        },
+        {
+          "name": "KDU-ČSL",
+          "details": { "yes": 8, "no": 0, "abstained": 0 },
+          "votes": [
+            { "voter": "Vít Beran", "text": "Ano", "option": "Ano" },
+            { "voter": "Antonín Crha", "text": "Ano", "option": "Ano" },
+            { "voter": "Petr Hladík", "text": "Ano", "option": "Ano" },
+            { "voter": "Filip Chvátal", "text": "Ano", "option": "Ano" },
+            { "voter": "Jitka Ivičičová", "text": "Ano", "option": "Ano" },
+            { "voter": "Filip Leder", "text": "Ano", "option": "Ano" },
+            { "voter": "Jiří Mihola", "text": "Ano", "option": "Ano" },
+            { "voter": "Jaroslav Suchý", "text": "Ano", "option": "Ano" }
+          ]
+        },
+        {
+          "name": "ODS",
+          "details": { "yes": 13, "no": 0, "abstained": 0 },
+          "votes": [
+            { "voter": "Jana Bohuňovská", "text": "Ano", "option": "Ano" },
+            { "voter": "David Grund", "text": "Ano", "option": "Ano" },
+            { "voter": "Jiří Herman", "text": "Ano", "option": "Ano" },
+            { "voter": "Michal Chládek", "text": "Ano", "option": "Ano" },
+            { "voter": "Pavel Jankůj", "text": "Ano (VK)", "option": "Ano" },
+            { "voter": "Ludvík Kadlec", "text": "Ano", "option": "Ano" },
+            { "voter": "Robert Kerndl", "text": "Ano", "option": "Ano" },
+            { "voter": "Petr Kratochvíl", "text": "Ano", "option": "Ano" },
+            { "voter": "Andrea Pazderová", "text": "Ano", "option": "Ano" },
+            { "voter": "David Pokorný", "text": "Ano", "option": "Ano" },
+            { "voter": "Martin Příborský", "text": "nepřít.", "option": null },
+            { "voter": "Kristýna Černá", "text": "Ano (VK)", "option": "Ano" },
+            { "voter": "David Trllo", "text": "Ano", "option": "Ano" },
+            { "voter": "Markéta Vaňková", "text": "Ano", "option": "Ano" }
+          ]
+        },
+        {
+          "name": "Piráti",
+          "details": { "yes": 6, "no": 0, "abstained": 0 },
+          "votes": [
+            { "voter": "Róbert Čuma", "text": "Ano (VK)", "option": "Ano" },
+            { "voter": "Marek Fišer", "text": "Ano (VK)", "option": "Ano" },
+            { "voter": "Alena Pavlasová", "text": "Ano", "option": "Ano" },
+            { "voter": "Tomáš Koláčný", "text": "Ano", "option": "Ano" },
+            { "voter": "Ondřej Kotas", "text": "Ano (VK)", "option": "Ano" },
+            { "voter": "Lukáš Mamula", "text": "Ano", "option": "Ano" }
+          ]
+        },
+        {
+          "name": "SPD",
+          "details": { "yes": 0, "no": 1, "abstained": 1 },
+          "votes": [
+            {
+              "voter": "Ivan Fencl",
+              "text": "Zdržel se",
+              "option": "Zdržel se"
+            },
+            { "voter": "Jiří Kment", "text": "Ne", "option": "Ne" },
+            { "voter": "Jana Přikrylová", "text": "nepřít.", "option": null },
+            { "voter": "Lucie Šafránková", "text": "nepřít.", "option": null }
+          ]
+        },
+        {
+          "name": "Nezávislí",
+          "details": { "yes": 5, "no": 0, "abstained": 0 },
+          "votes": [
+            { "voter": "Petr Bořecký", "text": "nepřít.", "option": null },
+            { "voter": "René Černý", "text": "nepřít.", "option": null },
+            { "voter": "Marek Janíček", "text": "nepřít.", "option": null },
+            { "voter": "Kateřina Jarošová", "text": "nepřít.", "option": null },
+            { "voter": "Karel Kalivoda", "text": "Ano", "option": "Ano" },
+            { "voter": "Karin Karasová", "text": "nepřít.", "option": null },
+            { "voter": "Richard Mrázek", "text": "Ano", "option": "Ano" },
+            { "voter": "René Novotný", "text": "Ano", "option": "Ano" },
+            { "voter": "Vít Prýgl", "text": "nepřít.", "option": null },
+            { "voter": "Petr Souček", "text": "Ano", "option": "Ano" },
+            { "voter": "Pavel Staněk", "text": "Ano", "option": "Ano" },
+            { "voter": "Petr Vokřál", "text": "nepřít.", "option": null }
+          ]
+        }
+      ]
+    }
+  ]
+}
