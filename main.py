@@ -2,13 +2,11 @@
 
 import configparser
 import os
-import pprint
 import tempfile
-import typing
 import zipfile
 
 from datetime import datetime
-
+from typing import List
 
 from src.DatabaseManager import DatabaseManager
 from src.ProtocolParser import ProtocolParser
@@ -22,15 +20,15 @@ def load_config() -> configparser.ConfigParser:
     return config
 
 
-def load_processed_files(db_manager: DatabaseManager) -> [str]:
+def load_processed_files(db_manager: DatabaseManager) -> List[str]:
     return db_manager.get_processed_filenames()
 
 
-def load_stored_files(protocols_dir: str) -> [str]:
+def load_stored_files(protocols_dir: str) -> List[str]:
     return os.listdir(protocols_dir)
 
 
-def get_new_files(db_manager: DatabaseManager, protocols_dir: str) -> [str]:
+def get_new_files(db_manager: DatabaseManager, protocols_dir: str) -> List[str]:
     p_files = load_processed_files(db_manager)
     s_files = load_stored_files(protocols_dir)
 

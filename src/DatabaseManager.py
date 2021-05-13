@@ -1,5 +1,5 @@
 import sqlite3
-import typing
+from typing import List
 
 from src.models.Option import Option
 from src.models.Poll import Poll
@@ -28,7 +28,7 @@ class DatabaseManager(object):
     def close(self):
         self.connection.close()
 
-    def get_polls(self, parameters: str) -> [Poll]:
+    def get_polls(self, parameters: str) -> List[Poll]:
         # TODO params
         poll_query = "SELECT * FROM polls"
 
@@ -78,7 +78,7 @@ class DatabaseManager(object):
         for party in poll.parties:
             self.__save_poll_party(poll.id, party)
 
-    def get_processed_filenames(self) -> [str]:
+    def get_processed_filenames(self) -> List[str]:
         query = "SELECT name FROM processed_files"
 
         cur = self.connection.cursor()
