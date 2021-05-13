@@ -100,9 +100,9 @@ if __name__ == '__main__':
         result_json = create_static_json(db_man)
         if (debug):
             print("## saving new JSON to '" +
-                  config['Parser']['TargetJson'] + "'")
+                  config['Common']['TargetJson'] + "'")
 
-        with open(config['Parser']['TargetJson'], 'w') as outfile:
+        with open(config['Common']['TargetJson'], 'w') as outfile:
             outfile.write(result_json)
 
     db_man.close()

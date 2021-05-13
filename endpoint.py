@@ -28,9 +28,9 @@ config.read("config.ini")
 arguments = cgi.FieldStorage()
 
 # no parameters provided
-if (len(arguments.keys()) == 0):
+if (len(arguments.keys()) == 0 or not config['Endpoint'].getboolean('AllowParams')):
     output = ""
-    with open(config['Parser']['TargetJson'], 'r') as f:
+    with open(config['Common']['TargetJson'], 'r') as f:
         output = f.read()
     print_output(output)
 
@@ -44,7 +44,7 @@ for key in arguments.keys():
     if (not supported_get_params[key]["validator"](arguments.getvalue(key))):
         print_output(json.dumps({"error": "Unsupported parameter value", "message": "Incorrect value for parameter '" +
                                  key + "': " + supported_get_params[key]["help"]}), "400 Bad Request")
-    
+
     params[key] = arguments.getvalue(key)
 
 polls = []
