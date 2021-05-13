@@ -10,6 +10,35 @@ from src.models.Result import Result
 from src.models.Vote import Vote
 
 
+def __is_int(val):
+    try:
+        int(val)
+        return True
+    except ValueError:
+        return False
+
+
+supported_get_params = {
+    # TODO where https://gis.brno.cz/ags1/sdk/rest/index.html#//02ss0000002r000000
+    # "where": {
+    #    "validator": "TODO",
+    #    "help": "TODO"
+    # },
+    "sort": {
+        "validator": lambda p: p in ["newest", "oldest"],
+        "help": "Supported values: 'newest', 'oldest'."
+    },
+    "limit": {
+        "validator": lambda p: __is_int(p),
+        "help": "Supported values: non-negative integers."
+    },
+    "offset": {
+        "validator": lambda p: __is_int(p),
+        "help": "Supported values: non-negative integers."
+    }
+}
+
+
 # behaves like a context manager https://book.pythontips.com/en/latest/context_managers.html
 class DatabaseManager(object):
     def __init__(self, db_path: str):
@@ -28,9 +57,8 @@ class DatabaseManager(object):
     def close(self):
         self.connection.close()
 
-    def get_polls(self, parameters: str) -> List[Poll]:
-        # TODO params
-        poll_query = "SELECT * FROM polls"
+    def get_polls(self, params: dict) -> List[Poll]:
+        poll_query = self.__build_query(params)
 
         cur = self.connection.cursor()
         cur.execute(poll_query)
@@ -109,6 +137,32 @@ class DatabaseManager(object):
             return entry["datetime"]
 
         return ""
+
+    def __build_query(self, params: dict) -> str:
+        for key in params.keys():
+            if (not key in supported_get_params.keys()):
+                raise Exception('invalid parameter "' + key + '" (unsupported)')
+            if (not supported_get_params[key]["validator"](params[key])):
+                raise Exception('invalid parameter "' + key + '" value', supported_get_params[key]["help"])
+
+        poll_query = "SELECT * FROM polls"
+
+        ordering = "DESC"
+        if ("sort" in params and params["sort"] == "oldest"):
+            ordering = "ASC"
+
+        poll_query += " ORDER BY datetime " + ordering
+
+        limit = -1
+        if ("limit" in params):
+            limit = int(params["limit"])
+        offset = 0
+        if ("offset" in params):
+            offset = int(params["offset"])
+        
+        poll_query = "SELECT * FROM (" + poll_query + ") LIMIT " + str(limit) + " OFFSET " + str(offset)
+
+        return poll_query
 
     def __save_poll_party(self, poll_id: int, party: PollParty):
         sql = 'INSERT INTO "poll_parties" ("poll", "name", "yes", "no", "abstained") VALUES (?,?,?,?,?);'
@@ -213,6 +267,6 @@ class DatabaseManager(object):
 
         result = {}
         for row in rows:
-            result[row["id"]] = Result(row["id"], row["sysid"], row["name"])
+            result[row["id"]] = Option(row["id"], row["sysid"], row["name"])
 
         return result

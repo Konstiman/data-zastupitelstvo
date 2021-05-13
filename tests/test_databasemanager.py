@@ -32,7 +32,7 @@ class DatabaseManagerSavingTest(unittest.TestCase):
         expected_polls = [self.get_poll_test_saved()]
 
         with DatabaseManager(self.db_full) as db_manager:
-            actual_polls = db_manager.get_polls("")
+            actual_polls = db_manager.get_polls({})
 
         self.assertEqual(len(actual_polls), len(expected_polls))
         compare_polls(self, actual_polls[0], expected_polls[0])
@@ -46,7 +46,7 @@ class DatabaseManagerSavingTest(unittest.TestCase):
         actual_polls = []
         expected_polls = [self.get_poll_z8_25_24_saved()]
         with DatabaseManager(self.db_empty) as db_manager:
-            actual_polls = db_manager.get_polls("")
+            actual_polls = db_manager.get_polls({})
 
         self.assertEqual(len(actual_polls), len(expected_polls))
         compare_polls(self, actual_polls[0], expected_polls[0])

@@ -46,7 +46,7 @@ def unzip_file(source: str, target: str):
 
 
 def create_static_json(db_manager: DatabaseManager) -> str:
-    all_polls = db_manager.get_polls("")
+    all_polls = db_manager.get_polls({})
 
     metadata = {
         "last_update": db_manager.get_last_update()
