@@ -47,7 +47,7 @@ CREATE TABLE "processed_files" (
 );
 INSERT INTO "result_options" ("sysid", "name")
 VALUES ("accepted", "Přijato"),
-    ("declined", "Zamítnuto");
+    ("declined", "Nepřijato");
 INSERT INTO "vote_options" ("sysid", "name")
 VALUES ("yes", "Ano"),
     ("no", "Ne"),

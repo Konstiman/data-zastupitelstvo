@@ -34,7 +34,7 @@
             "type": "string"
           },
           "result": {
-            "description": "Výsledek hlasování (Přijato / Zamítnuto)",
+            "description": "Výsledek hlasování (Přijato / Nepřijato)",
             "type": "string"
           },
           "details": {

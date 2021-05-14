@@ -149,18 +149,16 @@ class ProtocolParser:
         return votes
 
     def __getPollResult(self, text):
-        # TODO use regex
-        # TODO load options from db
+        # it might be better to load options from db
         if ("Přijato" in text):
             return Result(1, "accepted", "Přijato")
-        if ("Zamítnuto" in text):
-            return Result(2, "declined", "Zamítnuto")
+        if ("Nepřijato" in text):
+            return Result(2, "declined", "Nepřijato")
 
         return None
 
     def __getVoteOption(self, text):
-        # TODO use regex
-        # TODO load options from db
+        # it might be better to load options from db
         if ("Ano" in text):
             return Option(1, "yes", "Ano")
         if ("Ne" in text and not "Nepř" in text and not "Nehlasoval" in text):
