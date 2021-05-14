@@ -19,10 +19,10 @@ def __is_int(val):
 
 
 supported_get_params = {
-    # TODO where https://gis.brno.cz/ags1/sdk/rest/index.html#//02ss0000002r000000
+    # system could support also 'where' param: https://gis.brno.cz/ags1/sdk/rest/index.html#//02ss0000002r000000
     # "where": {
-    #    "validator": "TODO",
-    #    "help": "TODO"
+    #    "validator": "",
+    #    "help": ""
     # },
     "sort": {
         "validator": lambda p: p in ["newest", "oldest"],
