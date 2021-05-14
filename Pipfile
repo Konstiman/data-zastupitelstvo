@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 advancedhtmlparser = "*"
+jsonschema = "*"
 
 [requires]
 python_version = "3.8"

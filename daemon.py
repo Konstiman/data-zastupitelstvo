@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 
 import configparser
+import json
 import os
 import tempfile
 import zipfile
 
 from datetime import datetime
+from jsonschema import validate, ValidationError
 from typing import List
 
 from src.DatabaseManager import DatabaseManager
@@ -58,6 +60,19 @@ def create_static_json(db_manager: DatabaseManager) -> str:
     return result_json
 
 
+def is_json_valid(json_data: str) -> bool:
+    json_dict = json.loads(json_data)
+    json_schema = {}
+    with open("output-schema.json", 'r') as f:
+        json_schema = json.load(f)
+
+    try:
+        validate(json_dict, json_schema)
+        return True
+    except ValidationError:
+        return False
+
+
 if __name__ == '__main__':
     config = load_config()
 
@@ -104,5 +119,15 @@ if __name__ == '__main__':
 
         with open(config['Common']['TargetJson'], 'w') as outfile:
             outfile.write(result_json)
+
+        if (debug):
+            print("## validating the new JSON")
+
+        if (not is_json_valid(result_json)):
+            print("## WARNING: newly created JSON '" +
+                  config['Common']['TargetJson'] + "' is invalid!")
+        else:
+            if (debug):
+                print("## JSON validated successfully")
 
     db_man.close()
