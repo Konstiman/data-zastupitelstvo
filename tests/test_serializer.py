@@ -39,7 +39,7 @@ class SerializingTest(unittest.TestCase):
             None,
             "Z8/25",
             24,
-            "23.03.2021 - 9:07:05",
+            "2021-03-23T09:07:05+00:00",
             "21. Návrh na poskytnutí individuální investiční dotace Moravskému zemskému muzeu na realizaci projektu „Mendelova stezka Brnem“ – návrh rozpočtového opatření",
             Result(1, "accepted", "Přijato"),
             PollDetails(41, 39, 1, 1, None),

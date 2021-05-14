@@ -92,7 +92,7 @@ if __name__ == '__main__':
             db_man.save_poll(poll)
 
         db_man.save_processed_file(
-            new_file, datetime.now().strftime("%Y-%m-%dT%H:%M:%S+02:00"))
+            new_file, datetime.now().strftime("%Y-%m-%dT%H:%M:%S+00:00"))
 
     target_dir.cleanup()
 

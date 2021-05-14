@@ -2,6 +2,7 @@
 # coding=utf-8
 
 import AdvancedHTMLParser
+import datetime
 import re
 
 from src.models.Option import Option
@@ -32,7 +33,6 @@ class ProtocolParser:
         subject = re.sub(
             r'\s+', ' ', self.__getValueByClassName(tables[0], 'subject'))
 
-        # TODO choose one from db
         result = self.__getPollResult(tables[1].textContent.strip())
 
         code = self.__parseCode(title)
@@ -65,8 +65,9 @@ class ProtocolParser:
 
     def __parseDatetime(self, title):
         p = re.compile(r'^\s*Zastupitelstvo města Brna č\. [^\s]+\s+(.*?)\s*$')
-        # TODO parse to ISO 8601
-        return self.__parseValue(p, title)
+        raw_datetime = self.__parseValue(p, title)
+        obj_datetime = datetime.datetime.strptime(raw_datetime, '%d.%m.%Y - %H:%M:%S')
+        return obj_datetime.replace(tzinfo=datetime.timezone.utc).isoformat()
 
     def __parseNumber(self, subtitle):
         p = re.compile(r'^\s*Hlasování č\. (\d+)$')
