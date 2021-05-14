@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Konstiman/data-zastupitelstvo/blob/main/output-schema.json",
+  "title": "Hlasování zastupitelstva města Brna",
+  "description": "Výsledky hlasování zastupitelstva města Brna v otevřené podobě.",
+  "type": "object",
+  "properties": {
+    "last_update": {
+      "description": "Datum a čas poslední aktualizace datové sady",
+      "type": "string"
+    },
+    "data": {
+      "description": "Pole obsahující údaje o jednotlivých hlasováních",
+      "type": "array",
+      "items": {
+        "description": "Záznam z konkrétního hlasování zastupitelstva",
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "Číslo schůze zastupitelstva",
+            "type": "string"
+          },
+          "number": {
+            "description": "Číslo hlasování v rámci dané schůze",
+            "type": "integer"
+          },
+          "datetime": {
+            "description": "Datum a čas hlasování",
+            "type": "string",
+            "format": "date-time"
+          },
+          "subject": {
+            "description": "Předmět hlasování",
+            "type": "string"
+          },
+          "result": {
+            "description": "Výsledek hlasování (Přijato / Zamítnuto)",
+            "type": "string"
+          },
+          "details": {
+            "description": "Detailní výsledky hlasování",
+            "type": "object",
+            "properties": {
+              "present": {
+                "description": "Počet přítomných",
+                "type": "integer"
+              },
+              "yes": {
+                "description": "Počet hlasujících pro",
+                "type": "integer"
+              },
+              "no": {
+                "description": "Počet hlasujících proti",
+                "type": "integer"
+              },
+              "abstained": {
+                "description": "Počet zdrživších se hlasování",
+                "type": "integer"
+              },
+              "did_not_vote": {
+                "description": "Počet nehlasujících",
+                "type": ["integer", "null"]
+              }
+            }
+          },
+          "parties": {
+            "description": "Pole obsahující údaje o hlasování jednotlivých stran",
+            "type": "array",
+            "items": {
+              "description": "Záznam hlasování konkrétní politické strany",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "Název politické strany",
+                  "type": "string"
+                },
+                "details": {
+                  "description": "Detailní výsledky hlasování",
+                  "type": "object",
+                  "properties": {
+                    "yes": {
+                      "description": "Počet hlasujících pro",
+                      "type": "integer"
+                    },
+                    "no": {
+                      "description": "Počet hlasujících proti",
+                      "type": "integer"
+                    },
+                    "abstained": {
+                      "description": "Počet zdrživších se hlasování",
+                      "type": "integer"
+                    }
+                  }
+                },
+                "votes": {
+                  "description": "Pole obsahující údaje o hlasování jednotlivých zastupitelů",
+                  "type": "array",
+                  "items": {
+                    "description": "Záznam hlasování konkrétního zastupitele",
+                    "type": "object",
+                    "properties": {
+                      "voter": {
+                        "description": "Jméno a příjmení hlasujícího",
+                        "type": "string"
+                      },
+                      "text": {
+                        "description": "Původní textová reprezentace hlasu v záznamovém archu (pro případ, že dojde ke špatnému automatickému rozpoznání)",
+                        "type": "string"
+                      },
+                      "option": {
+                        "description": "Výsledná zvolená možnost (Ano / Ne / Zdržel se)",
+                        "type": ["string", "null"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": ["code", "subject", "result"]
+      }
+    }
+  },
+  "required": ["last_update", "data"]
+}
