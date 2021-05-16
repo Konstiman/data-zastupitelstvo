@@ -55,7 +55,7 @@ $ pipenv run python ./daemon.py
 Příklad cronu pro pravidelné spouštění každou hodinu:
 
 ```cron
-0 * * * * * pipenv run python ./daemon.py
+0 * * * * * cd /path/to/folder/ && pipenv run python ./daemon.py
 ```
 
 ### Nastavení endpointu
@@ -64,7 +64,7 @@ Pro spouštění endpointu `endpoint.py` je potřeba nejdříve aktivovat v Apac
 modul `cgid`:
 
 ```bash
-a2enmod cgid
+$ a2enmod cgid
 ```
 
 Následně je nutné konfigurovat pro Apache složku, kde se soubor `endpoint.py` 
