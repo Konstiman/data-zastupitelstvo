@@ -25,17 +25,17 @@ class ProtocolParser:
 
         tables = self.__parser.getElementsByTagName('table')
 
-        title = self.__get_value_by_class(tables[0], 'title')
+        title = self.__get_title(tables[0])
+
         subtitle = self.__get_value_by_tag(tables[0], 'p', 1)
-        subject = re.sub(
-            r'\s+', ' ', self.__get_value_by_class(tables[0], 'subject'))
+        subject = self.__get_subject(tables[0])
 
         result = self.__get_poll_result(tables[1].textContent.strip())
 
         code = self.__parse_code(title)
         number = self.__parse_number(subtitle)
         datetime = self.__parse_datetime(title)
-        details = self.__parse_subresults(tables[3].textContent.split("\n"))
+        details = self.__parse_subresults(tables[3])
         parties = self.__parse_party_results(tables)
 
         return Poll(None, code, number, datetime, subject, result, details, parties)
@@ -43,6 +43,29 @@ class ProtocolParser:
     def __load_file(self, filename: str) -> str:
         with open(filename, 'rb') as f:
             return f.read().decode("windows-1250").encode('utf-8').decode('utf-8')
+
+    def __get_title(self, title_tab):
+        title = ""
+        try:
+            title = self.__get_value_by_class(title_tab, 'title')
+        except:
+            try:
+                title = self.__get_value_by_class(title_tab, 'header')
+            except:
+                pass
+        
+        return title
+
+    def __get_subject(self, subject_tab):
+        subject = ""
+        try:
+            subject = self.__get_value_by_class(subject_tab, 'subject')
+        except:
+            subjectElems = self.__parser.getElementsByXPath("//center/b")
+            if (len(subjectElems) > 0):
+                subject = subjectElems[0].textContent.strip()
+
+        return re.sub(r'\s+', ' ', subject)
 
     def __get_value_by_class(self, root, className, index=0):
         return root.getElementsByClassName(className)[index].textContent.strip()
@@ -63,8 +86,14 @@ class ProtocolParser:
     def __parse_datetime(self, title):
         p = re.compile(r'^\s*Zastupitelstvo města Brna č\. [^\s]+\s+(.*?)\s*$')
         raw_datetime = self.__parse_value(p, title)
-        obj_datetime = datetime.datetime.strptime(
-            raw_datetime, '%d.%m.%Y - %H:%M:%S')
+        obj_datetime = None
+        try:
+            obj_datetime = datetime.datetime.strptime(
+                raw_datetime, '%d.%m.%Y - %H:%M:%S')
+        except:
+            obj_datetime = datetime.datetime.strptime(
+                raw_datetime, '%d.%m.%Y %H:%M.%S')
+
         return obj_datetime.replace(tzinfo=datetime.timezone.utc).isoformat()
 
     def __parse_number(self, subtitle):
@@ -75,10 +104,11 @@ class ProtocolParser:
         p = re.compile(r'^.*?:\s+(\d+)$')
         return int(self.__parse_value(p, string))
 
-    def __parse_subresults(self, array):
+    def __parse_subresults(self, table):
+        cells = self.__parser.getElementsByTagName("td", table)
         subresults = []
-        for i in range(len(array)):
-            subr = re.sub(r'\s+', ' ', array[i].strip())
+        for i in range(len(cells)):
+            subr = re.sub(r'\s+', ' ', cells[i].textContent.strip())
             if (subr):
                 subresults.append(subr)
 
@@ -126,13 +156,10 @@ class ProtocolParser:
     def __parse_party_votes(self, rows):
         entries = []
         for i in range(len(rows)):
-            content = rows[i].textContent
-            splitter = "\n"
-            if ("\r" in content):
-                splitter = "\r\n"
-            subentries = content.split(splitter)
-            for j in range(1, len(subentries) - 1):
-                entries.append(subentries[j].strip())
+            cells = self.__parser.getElementsByTagName('td', rows[i])
+            for j in range(0, len(cells)):
+                val = re.sub(r'\s+', ' ', cells[j].textContent.strip())
+                entries.append(val)
         return entries
 
     def __group_party_votes(self, entries):

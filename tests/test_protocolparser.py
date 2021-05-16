@@ -24,7 +24,8 @@ class ParsingProtocolsTest(unittest.TestCase):
     def test_protocol_z8_18_1(self):
         parser = ProtocolParser()
 
-        parsed_poll = parser.parse_file('tests/protocols/20200616-1-29874.html')
+        parsed_poll = parser.parse_file(
+            'tests/protocols/20200616-1-29874.html')
 
         expected_poll = self.get_poll_z8_18_1()
 
@@ -40,7 +41,110 @@ class ParsingProtocolsTest(unittest.TestCase):
 
         compare_polls(self, parsed_poll, expected_poll)
 
+    def test_protocol_z5_034_4(self):
+        parser = ProtocolParser()
+
+        parsed_poll = parser.parse_file(
+            'tests/protocols/18-05-10_8-22_19859.html')
+
+        expected_poll = self.get_poll_z5_034_4()
+
+        compare_polls(self, parsed_poll, expected_poll)
+
     # sample data section
+
+    def get_option(self, id):
+        if (id == 1):
+            return Option(1, "yes", "Ano")
+        if (id == 2):
+            return Option(2, "no", "Ne")
+        if (id == 3):
+            return Option(3, "abstained", "Zdržel se")
+
+        return None
+
+    def get_poll_z5_034_4(self):
+        return Poll(
+            None,
+            "Z5/034",
+            4,
+            "2010-05-18T08:22:03+00:00",
+            "Bod č. 1 - program - hlasování o zařazení bodu č. 84 Technický bod (zapisovatelky, právní asistence, ověřovatelé zápisu, schválení programu zasedání ZMB)",
+            Result(2, "declined", "Nepřijato"),
+            PollDetails(47, 4, 15, 25, 3),
+            [
+                PollParty(None, "BRNO2006", PollPartyDetails(1, 0, 4), [
+                    Vote(None, "Belcredi BRNO2006",
+                         "Zdržel se", self.get_option(3)),
+                    Vote(None, "Derflerová BRNO2006",
+                         "Ano", self.get_option(1)),
+                    Vote(None, "Němec BRNO2006",
+                         "Zdržel se", self.get_option(3)),
+                    Vote(None, "Spousta BRNO2006",
+                         "Zdržel se", self.get_option(3)),
+                    Vote(None, "Zlatuška BRNO2006",
+                         "Zdržel se", self.get_option(3)),
+                ]),
+                PollParty(None, "ČSSD", PollPartyDetails(0, 9, 3), [
+                    Vote(None, "Burda ČSSD", "Ne", self.get_option(2)),
+                    Vote(None, "Haluza ČSSD", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Humpolíček ČSSD", "Ne", self.get_option(2)),
+                    Vote(None, "Jakubec ČSSD", "Ne", self.get_option(2)),
+                    Vote(None, "Křemečková ČSSD", "Ne", self.get_option(2)),
+                    Vote(None, "Macek ČSSD", "Ne", self.get_option(2)),
+                    Vote(None, "Novotný ČSSD", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Oliva ČSSD", "Nehlasoval",
+                         self.get_option(None)),
+                    Vote(None, "Onderka ČSSD", "Ne", self.get_option(2)),
+                    Vote(None, "Pospíšil ČSSD", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Sázavský ČSSD", "Ne", self.get_option(2)),
+                    Vote(None, "Tůmová ČSSD", "Ne", self.get_option(2)),
+                    Vote(None, "Žďárský ČSSD", "Ne", self.get_option(2)),
+                ]),
+                PollParty(None, "KDU-ČSL", PollPartyDetails(0, 2, 3), [
+                    Vote(None, "Beran KDU-ČSL", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Javorová KDU-ČSL", "Ne", self.get_option(2)),
+                    Vote(None, "Rychnovský KDU-ČSL",
+                         "Zdržel se", self.get_option(3)),
+                    Vote(None, "Suchý KDU-ČSL", "Ne", self.get_option(2)),
+                    Vote(None, "Veselý KDU-ČSL",
+                         "Zdržel se", self.get_option(3)),
+                ]),
+                PollParty(None, "KSČM", PollPartyDetails(3, 0, 0), [
+                    Vote(None, "Březa KSČM", "Ano", self.get_option(1)),
+                    Vote(None, "Býček KSČM", "Ano", self.get_option(1)),
+                    Vote(None, "Kůta KSČM", "Ano", self.get_option(1)),
+                ]),
+                PollParty(None, "ODS", PollPartyDetails(0, 4, 10), [
+                    Vote(None, "Blažek ODS", "Nehlasoval",
+                         self.get_option(None)),
+                    Vote(None, "Bohuňovská ODS",
+                         "Zdržel se", self.get_option(3)),
+                    Vote(None, "Fabiánek ODS", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Hladík ODS", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Hledík ODS", "Nehlasoval",
+                         self.get_option(None)),
+                    Vote(None, "Hošek ODS", "Ne", self.get_option(2)),
+                    Vote(None, "Chládek ODS", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Janištin ODS", "Ne", self.get_option(2)),
+                    Vote(None, "Jankůj ODS", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Kerndl ODS", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Michalík ODS", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Paulczyňski ODS", "Ne", self.get_option(2)),
+                    Vote(None, "Prchal ODS", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Šťástka ODS", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Vaňková ODS", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Venclík ODS", "Ne", self.get_option(2)),
+                ]),
+                PollParty(None, "SZ", PollPartyDetails(0, 0, 5), [
+                    Vote(None, "Ander SZ", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Bartůšek SZ", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Dubská SZ", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Slavíková SZ", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Vlašín SZ", "Zdržel se", self.get_option(3)),
+                ]),
+            ]
+        )
 
     def get_poll_z8_18_1(self):
         return Poll(
