@@ -51,6 +51,16 @@ class ParsingProtocolsTest(unittest.TestCase):
 
         compare_polls(self, parsed_poll, expected_poll)
 
+    def test_protocol_z7_11_13(self):
+        parser = ProtocolParser()
+
+        parsed_poll = parser.parse_file(
+            'tests/protocols/20151110-13-31908.html')
+
+        expected_poll = self.get_poll_z7_11_13()
+
+        compare_polls(self, parsed_poll, expected_poll)
+
     # sample data section
 
     def get_option(self, id):
@@ -62,6 +72,101 @@ class ParsingProtocolsTest(unittest.TestCase):
             return Option(3, "abstained", "Zdržel se")
 
         return None
+
+    def get_poll_z7_11_13(self):
+        return Poll(
+            None,
+            "Z7/11",
+            13,
+            "2015-11-10T08:51:48+00:00",
+            "Bod č. 10 Výsledky hospodaření statutárního města Brna za I. – III. čtvrtletí roku 2015, návrh rozpočtového opatření – aktualizace očekávaného čerpání rozpočtu kapitálových výdajů města Brna v roce 2015",
+            Result(1, "accepted", "Přijato"),
+            PollDetails(54, 30, 6, 12, 6),
+            [
+                PollParty(None, "ANO 2011", PollPartyDetails(13, 0, 0), [
+                    Vote(None, "Lubora Bednaříková",
+                         "Ano", self.get_option(1)),
+                    Vote(None, "Petr Bořecký", "Ano", self.get_option(1)),
+                    Vote(None, "Marek Janíček", "Ano", self.get_option(1)),
+                    Vote(None, "Karin Karasová", "Ano", self.get_option(1)),
+                    Vote(None, "Tomáš Kratochvíl", "Ano", self.get_option(1)),
+                    Vote(None, "Barbora Maťáková", "Ano", self.get_option(1)),
+                    Vote(None, "Richard Mrázek", "Ano", self.get_option(1)),
+                    Vote(None, "René Novotný", "Ano", self.get_option(1)),
+                    Vote(None, "Robert Plaga", "Ano", self.get_option(1)),
+                    Vote(None, "Petra Rusňáková", "Ano", self.get_option(1)),
+                    Vote(None, "Martin Schwab", "Ano", self.get_option(1)),
+                    Vote(None, "Pavel Staněk", "Ano", self.get_option(1)),
+                    Vote(None, "Petr Vokřál", "Ano", self.get_option(1)),
+                ]),
+                PollParty(None, "ČSSD", PollPartyDetails(0, 5, 3), [
+                    Vote(None, "Pavel Boleslav", "Ne", self.get_option(2)),
+                    Vote(None, "Miloslav Humpolíček",
+                         "Nehlasoval", self.get_option(None)),
+                    Vote(None, "Jiří Ides", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Naděžda Křemečková",
+                         "Zdržel se", self.get_option(3)),
+                    Vote(None, "Jiří Novotný", "Ne", self.get_option(2)),
+                    Vote(None, "Jiří Oliva", "Nehlasoval",
+                         self.get_option(None)),
+                    Vote(None, "Roman Onderka", "Ne", self.get_option(2)),
+                    Vote(None, "Oliver Pospíšil", "Ne", self.get_option(2)),
+                    Vote(None, "Pavel Sázavský", "Ne", self.get_option(2)),
+                    Vote(None, "Vlastimil Žďárský",
+                         "Zdržel se", self.get_option(3)),
+                ]),
+                PollParty(None, "KDU-ČSL", PollPartyDetails(7, 0, 0), [
+                    Vote(None, "Vít Beran", "Ano", self.get_option(1)),
+                    Vote(None, "Antonín Crha", "Ano", self.get_option(1)),
+                    Vote(None, "Petr Hladík", "Ano", self.get_option(1)),
+                    Vote(None, "Stanislav Juránek", "Ano", self.get_option(1)),
+                    Vote(None, "Klára Liptáková", "Ano", self.get_option(1)),
+                    Vote(None, "Daniel Rychnovský", "Ano", self.get_option(1)),
+                    Vote(None, "Jaroslav Suchý", "Ano", self.get_option(1)),
+                ]),
+                PollParty(None, "KSČM", PollPartyDetails(0, 1, 3), [
+                    Vote(None, "Daniel Borecký", "Ne", self.get_option(2)),
+                    Vote(None, "Jiří Hráček", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Martin Říha", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Helena Sýkorová",
+                         "Zdržel se", self.get_option(3)),
+                ]),
+                PollParty(None, "ODS", PollPartyDetails(0, 0, 2), [
+                    Vote(None, "Šárka Cechová", "Nehlasoval",
+                         self.get_option(None)),
+                    Vote(None, "Robert Kerndl", "Nehlasoval",
+                         self.get_option(None)),
+                    Vote(None, "Petr Kratochvíl",
+                         "Zdržel se", self.get_option(3)),
+                    Vote(None, "Libor Šťástka", "Zdržel se", self.get_option(3)),
+                    Vote(None, "František Vižďa",
+                         "Nehlasoval", self.get_option(None)),
+                ]),
+                PollParty(None, "SZ", PollPartyDetails(4, 0, 0), [
+                    Vote(None, "Martin Ander", "Ano", self.get_option(1)),
+                    Vote(None, "Jana Drápalová", "Ano", self.get_option(1)),
+                    Vote(None, "Ivana Fajnorová", "Ano", self.get_option(1)),
+                    Vote(None, "Mojmír Vlašín", "Ano", self.get_option(1)),
+                ]),
+                PollParty(None, "TOP 09", PollPartyDetails(0, 0, 4), [
+                    Vote(None, "Josef Drbal", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Zdeňka Dubová", "Zdržel se", self.get_option(3)),
+                    Vote(None, "Jaroslav Kacer",
+                         "Zdržel se", self.get_option(3)),
+                    Vote(None, "Pavel Urubek", "Zdržel se", self.get_option(3)),
+                ]),
+                PollParty(None, "ŽTB", PollPartyDetails(6, 0, 0), [
+                    Vote(None, "Martin Freund", "Ano", self.get_option(1)),
+                    Vote(None, "Karla Hofmannová", "Ano", self.get_option(1)),
+                    Vote(None, "Jan Hollan", "Ano", self.get_option(1)),
+                    Vote(None, "Matěj Hollan", "Ano", self.get_option(1)),
+                    Vote(None, "Hana Kašpaříková", "Ano", self.get_option(1)),
+                    Vote(None, "Tomáš Koláčný", "Nehlasoval",
+                         self.get_option(None)),
+                    Vote(None, "Jiří Ulip", "Ano", self.get_option(1)),
+                ]),
+            ]
+        )
 
     def get_poll_z5_034_4(self):
         return Poll(
