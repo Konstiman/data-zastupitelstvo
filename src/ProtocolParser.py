@@ -109,7 +109,7 @@ class ProtocolParser:
         subresults = []
         for i in range(len(cells)):
             subr = re.sub(r'\s+', ' ', cells[i].textContent.strip())
-            if (subr):
+            if (subr and re.match(r'^[^\d]+:\s*\d+$', subr)):
                 subresults.append(subr)
 
         return PollDetails(
