@@ -36,7 +36,7 @@ def get_new_files(db_manager: DatabaseManager, protocols_dir: str) -> List[str]:
 
     output = []
     for s_file in s_files:
-        if (not s_file in p_files):
+        if (not s_file in p_files and s_file.endswith(".zip")):
             output.append(s_file)
 
     return output
@@ -97,13 +97,26 @@ if __name__ == '__main__':
             print("##  - " + new_file)
 
         target_dir.cleanup()
-        unzip_file(os.path.join(
-            config['Parser']['ProtocolsDir'], new_file), target_dir.name)
+        try:
+            unzip_file(os.path.join(
+                config['Parser']['ProtocolsDir'], new_file), target_dir.name)
+        except Exception:
+            print("## WARNING: file '" + new_file + "' is not a valid .zip!")
+            continue
 
         protocols = os.listdir(target_dir.name)
 
         for protocol in protocols:
-            poll = parser.parse_file(os.path.join(target_dir.name, protocol))
+            if (not protocol.endswith(".html")):
+                print("skipping " + protocol)
+                continue
+            try:
+                poll = parser.parse_file(
+                    os.path.join(target_dir.name, protocol))
+            except Exception:
+                print("## WARNING: protocol '" + protocol + "' in '" +
+                      new_file + "' is not a valid .html protocol!")
+                continue
             db_man.save_poll(poll)
 
         db_man.save_processed_file(
