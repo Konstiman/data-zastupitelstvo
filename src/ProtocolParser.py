@@ -84,7 +84,7 @@ class ProtocolParser:
         return self.__parse_value(p, title)
 
     def __parse_datetime(self, title):
-        p = re.compile(r'^\s*Zastupitelstvo města Brna č\. [^\s]+\s+(.*?)\s*$')
+        p = re.compile(r'^.*?(\d{1,2}\.\d{1,2}\.\d{4}\s*-?\s+\d{1,2}:\d{1,2}[:\.]\d{1,2})\s*$')
         raw_datetime = self.__parse_value(p, title)
         obj_datetime = None
         try:
@@ -97,19 +97,22 @@ class ProtocolParser:
         return obj_datetime.replace(tzinfo=datetime.timezone.utc).isoformat()
 
     def __parse_number(self, subtitle):
-        p = re.compile(r'^\s*Hlasování č\. (\d+)$')
+        p = re.compile(r'^\s*Hlasování č\. (\d+)s*.*$')
         return int(self.__parse_value(p, subtitle))
 
     def __parse_subresult(self, string):
         p = re.compile(r'^.*?:\s+(\d+)$')
-        return int(self.__parse_value(p, string))
+        val = self.__parse_value(p, string)
+        if (val):
+            return int(val)
+        return 0
 
     def __parse_subresults(self, table):
         cells = self.__parser.getElementsByTagName("td", table)
         subresults = []
         for i in range(len(cells)):
             subr = re.sub(r'\s+', ' ', cells[i].textContent.strip())
-            if (subr and re.match(r'^[^\d]+:\s*\d+$', subr)):
+            if (subr and re.match(r'^[^\d]+:\s*\d*\s*$', subr)):
                 subresults.append(subr)
 
         return PollDetails(

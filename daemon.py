@@ -4,6 +4,7 @@ import configparser
 import json
 import os
 import tempfile
+import traceback
 import zipfile
 
 from datetime import datetime
@@ -107,14 +108,20 @@ if __name__ == '__main__':
 
             for protocol in protocols:
                 if (not protocol.endswith(".html")):
-                    print("skipping " + protocol)
+                    if (debug):
+                        print("##    - skipping " + protocol)
                     continue
                 try:
+                    if (debug):
+                        print("##    - parsing " + protocol)
                     poll = parser.parse_file(
                         os.path.join(target_dir, protocol))
-                except Exception:
+                except Exception as e:
                     print("## WARNING: protocol '" + protocol + "' in '" +
                         new_file + "' is not a valid .html protocol!")
+                    if (debug):
+                        print ("            " + str(e))
+                        traceback.print_exc()
                     continue
                 db_man.save_poll(poll)
 
