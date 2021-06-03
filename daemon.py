@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import configparser
+import logging
 import json
 import os
 import tempfile
@@ -21,6 +22,11 @@ def load_config() -> configparser.ConfigParser:
     config.read("config.ini")
 
     return config
+
+
+def setup_logging(logfile, debug=False):
+    logging.basicConfig(format='[%(asctime)s] %(levelname)s: %(message)s', filename=logfile,
+                        level=logging.DEBUG if debug else logging.INFO)
 
 
 def load_processed_files(db_manager: DatabaseManager) -> List[str]:
@@ -78,73 +84,77 @@ if __name__ == '__main__':
     config = load_config()
 
     debug = config['Parser'].getboolean('Debug')
-    if (debug):
-        print("## debug mode on")
+    setup_logging(config['Parser']['LogFile'], debug)
+
+    logging.info("starting daemon.py")
+    logging.debug("debug mode on")
 
     db_man = DatabaseManager(config['Common']['DatabaseFile'])
-    if (debug):
-        print("## loaded db '" + config['Common']['DatabaseFile'] + "'")
+    logging.debug("loaded db '" + config['Common']['DatabaseFile'] + "'")
 
     new_files = get_new_files(db_man, config['Parser']['ProtocolsDir'])
-    if (debug):
-        print("## found " + str(len(new_files)) + " new files in directory '" +
-              config['Parser']['ProtocolsDir'] + "': ")
+    logging.debug("found " + str(len(new_files)) + " new files in directory '" +
+                  config['Parser']['ProtocolsDir'] + "'")
 
     parser = ProtocolParser()
 
+    total_zips = 0
+    total_html = 0
+
     for new_file in new_files:
-        if (debug):
-            print("##  - " + new_file)
+        logging.debug("processing file '" + new_file + "'")
 
         with tempfile.TemporaryDirectory() as target_dir:
             try:
                 unzip_file(os.path.join(
                     config['Parser']['ProtocolsDir'], new_file), target_dir)
             except Exception:
-                print("## WARNING: file '" + new_file + "' is not a valid .zip!")
+                logging.warning("file '" + new_file + "' is not a valid .zip!")
                 continue
 
             protocols = os.listdir(target_dir)
 
             for protocol in protocols:
                 if (not protocol.endswith(".html")):
-                    if (debug):
-                        print("##    - skipping " + protocol)
+                    logging.debug("'" + protocol +
+                                  "' is not .html -> skipping")
                     continue
                 try:
-                    if (debug):
-                        print("##    - parsing " + protocol)
+                    logging.debug("parsing '" + protocol + "' in '" + new_file + "'")
                     poll = parser.parse_file(
                         os.path.join(target_dir, protocol))
                 except Exception as e:
-                    print("## WARNING: protocol '" + protocol + "' in '" +
-                        new_file + "' is not a valid .html protocol!")
-                    if (debug):
-                        print ("            " + str(e))
-                        traceback.print_exc()
+                    logging.warning("couldn't parse protocol: file '" + protocol + "' in '" +
+                                    new_file + "' is not a valid .html protocol!")
+                    logging.debug(str(e) + "\n" + traceback.format_exc())
                     continue
                 db_man.save_poll(poll)
+
+                total_html += 1
 
             db_man.save_processed_file(
                 new_file, datetime.now().strftime("%Y-%m-%dT%H:%M:%S+00:00"))
 
+            total_zips += 1
+
     if (len(new_files) > 0):
         result_json = create_static_json(db_man)
-        if (debug):
-            print("## saving new JSON to '" +
-                  config['Common']['TargetJson'] + "'")
+        logging.debug("saving new JSON to '" +
+                      config['Common']['TargetJson'] + "'")
 
         with open(config['Common']['TargetJson'], 'w') as outfile:
             outfile.write(result_json)
 
-        if (debug):
-            print("## validating the new JSON")
-
         if (not is_json_valid(result_json)):
-            print("## WARNING: newly created JSON '" +
-                  config['Common']['TargetJson'] + "' is invalid!")
+            logging.warning("newly created JSON '" +
+                            config['Common']['TargetJson'] + "' is not valid (schema differs)!")
         else:
-            if (debug):
-                print("## JSON validated successfully")
+            logging.debug("JSON validated successufully")
 
     db_man.close()
+
+    if (total_zips > 0):
+        logging.info("stopping daemon.py: successfully processed " +
+                     str(total_zips) + " zip files and " + str(total_html) + " protocols")
+    else:
+        logging.info("stopping daemon.py: no new zip files")
