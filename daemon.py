@@ -91,38 +91,35 @@ if __name__ == '__main__':
 
     parser = ProtocolParser()
 
-    target_dir = tempfile.TemporaryDirectory()
     for new_file in new_files:
         if (debug):
             print("##  - " + new_file)
 
-        target_dir.cleanup()
-        try:
-            unzip_file(os.path.join(
-                config['Parser']['ProtocolsDir'], new_file), target_dir.name)
-        except Exception:
-            print("## WARNING: file '" + new_file + "' is not a valid .zip!")
-            continue
-
-        protocols = os.listdir(target_dir.name)
-
-        for protocol in protocols:
-            if (not protocol.endswith(".html")):
-                print("skipping " + protocol)
-                continue
+        with tempfile.TemporaryDirectory() as target_dir:
             try:
-                poll = parser.parse_file(
-                    os.path.join(target_dir.name, protocol))
+                unzip_file(os.path.join(
+                    config['Parser']['ProtocolsDir'], new_file), target_dir)
             except Exception:
-                print("## WARNING: protocol '" + protocol + "' in '" +
-                      new_file + "' is not a valid .html protocol!")
+                print("## WARNING: file '" + new_file + "' is not a valid .zip!")
                 continue
-            db_man.save_poll(poll)
 
-        db_man.save_processed_file(
-            new_file, datetime.now().strftime("%Y-%m-%dT%H:%M:%S+00:00"))
+            protocols = os.listdir(target_dir)
 
-    target_dir.cleanup()
+            for protocol in protocols:
+                if (not protocol.endswith(".html")):
+                    print("skipping " + protocol)
+                    continue
+                try:
+                    poll = parser.parse_file(
+                        os.path.join(target_dir, protocol))
+                except Exception:
+                    print("## WARNING: protocol '" + protocol + "' in '" +
+                        new_file + "' is not a valid .html protocol!")
+                    continue
+                db_man.save_poll(poll)
+
+            db_man.save_processed_file(
+                new_file, datetime.now().strftime("%Y-%m-%dT%H:%M:%S+00:00"))
 
     if (len(new_files) > 0):
         result_json = create_static_json(db_man)
