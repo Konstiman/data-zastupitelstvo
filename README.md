@@ -18,7 +18,7 @@ Záznamy lze také řadit a stránkovat pomocí url parametrů. K dispozici jsou
 
 - `sort`: určuje řazení záznamů ve výsledném JSONu, povolené hodnoty jsou `newest` a `oldest`
 - `limit`: určuje počet záznamů na jedné stránce (tzn. maximální počet zobrazených záznamů), povolené jsou kladné celočíselné hodnoty
-- `offset`: při použití parametru `limit` určuje číslo právě zobrazené stránky, povolené jsou kladné celočíselné hodnoty; stránky jsou indexovány od nuly
+- `offset`: při použití parametru `limit` určuje číslo právě zobrazené stránky, povolené jsou nezáporné celočíselné hodnoty; stránky jsou indexovány od nuly
 
 Parametry jsou zadávány standardním způsobem přímo v url adrese - za úvodním otazníkem následují jednotlivé dvojice klíč=hodnota oddělené ampersandem.
 
