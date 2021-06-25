@@ -18,13 +18,15 @@ Záznamy lze také řadit a stránkovat pomocí url parametrů. K dispozici jsou
 
 - `sort`: určuje řazení záznamů ve výsledném JSONu, povolené hodnoty jsou `newest` a `oldest`
 - `limit`: určuje počet záznamů na jedné stránce (tzn. maximální počet zobrazených záznamů), povolené jsou kladné celočíselné hodnoty
-- `offset`: při použití parametru `limit` určuje číslo právě zobrazené stránky, povolené jsou nezáporné celočíselné hodnoty; stránky jsou indexovány od nuly
+- `offset`: při použití parametru `limit` určuje záznam, od kterého se začíná (indexováno od nuly), povolené jsou nezáporné celočíselné hodnoty
 
 Parametry jsou zadávány standardním způsobem přímo v url adrese - za úvodním otazníkem následují jednotlivé dvojice klíč=hodnota oddělené ampersandem.
 
-Příklad - následující url adresa s parametry zobrazí druhou stránku záznamů stránkovaných po deseti a řazených podle data sestupně:
+Příklad - následující url adresa s parametry zobrazí třetí stránku záznamů stránkovaných po deseti a řazených podle data sestupně:
 
-https://kod.brno.cz/zastupitelstvo/?sort=newest&limit=10&offset=1
+https://kod.brno.cz/zastupitelstvo/?sort=newest&limit=10&offset=20
+
+offset = index stránky * limit, v tomto případě tedy 2 * 10 (index třetí stránky je 2, protože se indexuje od nuly)
 
 ## Spuštění systému
 
