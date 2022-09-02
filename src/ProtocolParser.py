@@ -2,6 +2,7 @@
 # coding=utf-8
 
 import AdvancedHTMLParser
+from chardet.universaldetector import UniversalDetector
 import datetime
 import re
 import typing
@@ -20,7 +21,8 @@ class ProtocolParser:
         self.__parser = AdvancedHTMLParser.AdvancedHTMLParser()
 
     def parse_file(self, filename: str) -> Poll:
-        html = self.__load_file(filename)
+        enc = self.__get_encoding(filename)
+        html = self.__load_file(filename, enc)
         self.__parser.parseStr(html)
 
         tables = self.__parser.getElementsByTagName('table')
@@ -40,9 +42,24 @@ class ProtocolParser:
 
         return Poll(None, code, number, datetime, subject, result, details, parties)
 
-    def __load_file(self, filename: str) -> str:
+    def __get_encoding(self, filename: str) -> str:
+        detector = UniversalDetector()
+        detector.reset()
+        for line in open(filename, 'rb'):
+            detector.feed(line)
+            if detector.done:
+                break
+        detector.close()
+
+        enc = detector.result['encoding']
+        if (enc == 'utf-8'):
+            return 'utf-8'
+
+        return 'windows-1250'
+
+    def __load_file(self, filename: str, enc: str) -> str:
         with open(filename, 'rb') as f:
-            return f.read().decode("windows-1250").encode('utf-8').decode('utf-8')
+            return f.read().decode(enc).encode('utf-8').decode('utf-8')
 
     def __get_title(self, title_tab):
         title = ""
@@ -53,7 +70,7 @@ class ProtocolParser:
                 title = self.__get_value_by_class(title_tab, 'header')
             except:
                 pass
-        
+
         return title
 
     def __get_subject(self, subject_tab):
@@ -84,7 +101,8 @@ class ProtocolParser:
         return self.__parse_value(p, title)
 
     def __parse_datetime(self, title):
-        p = re.compile(r'^.*?(\d{1,2}\.\d{1,2}\.\d{4}\s*-?\s+\d{1,2}:\d{1,2}[:\.]\d{1,2})\s*$')
+        p = re.compile(
+            r'^.*?(\d{1,2}\.\d{1,2}\.\d{4}\s*-?\s+\d{1,2}:\d{1,2}[:\.]\d{1,2})\s*$')
         raw_datetime = self.__parse_value(p, title)
         obj_datetime = None
         try:
